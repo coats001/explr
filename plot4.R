@@ -1,0 +1,20 @@
+consumption <- read.csv("SUB_household_power_consumption.txt", sep=";")
+consumption$Time <- strptime(with(consumption, paste(Date,Time, sep=":")), "%d/%m/%Y:%H:%M:%S")
+consumption$Date <- as.Date(consumption$Date, "%d/%m/%Y")
+
+#plot 4
+png(filename = 'plot4.png', width = 480, height = 480, units = 'px')
+par(mfrow = c(2, 2))
+with(consumption, {
+  plot(Time,Global_active_power,type="n", xlab="",ylab="Global Active Power(kilowatts)")
+  lines(Time,Global_active_power,type="l")
+  plot(Time,Voltage,type="n", xlab="datetime")
+  lines(Time,Voltage,type="l")
+  plot(Time,Sub_metering_1,type="l",xlab="",ylab="Energy sub metering")
+  lines(Time,Sub_metering_2,type="l", col="red")
+  lines(Time,Sub_metering_3,type="l", col="blue")
+  legend("topright",pch="-",col=c("black","red","blue"),legend=c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),cex=0.8)
+  plot(Time,Global_reactive_power,type="n", xlab="datetime")
+  lines(Time,Global_reactive_power,type="l")
+})
+dev.off()
